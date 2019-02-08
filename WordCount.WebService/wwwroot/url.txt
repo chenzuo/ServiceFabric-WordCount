@@ -1,0 +1,2 @@
+﻿http://localhost:8081//wordcount/index.html/api/Count?c=0.8725653046315093 原来错误的
+http://localhost:8081/wordcount/api/Count?c=0.21272948908468658 正确的
