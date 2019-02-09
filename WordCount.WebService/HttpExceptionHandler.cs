@@ -17,7 +17,7 @@ namespace WordCount.WebService
         {
             if (exceptionInformation.Exception is TimeoutException)
             {
-                result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, retrySettings.DefaultMaxRetryCount);
+                result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false,retrySettings,8);
                 return true;
             }
             else if (exceptionInformation.Exception is ProtocolViolationException)
@@ -27,12 +27,12 @@ namespace WordCount.WebService
             }
             else if (exceptionInformation.Exception is SocketException)
             {
-                result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, retrySettings.DefaultMaxRetryCount);
+                result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, 8);
                 return true;
             }
             else if (exceptionInformation.Exception is HttpRequestException)
             {
-                result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, retrySettings.DefaultMaxRetryCount);
+                result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, 8);
                 return true;
             }
 
@@ -53,7 +53,7 @@ namespace WordCount.WebService
                     {
                         // This could either mean we requested an endpoint that does not exist in the service API (a user error)
                         // or the address that was resolved by fabric client is stale (transient runtime error) in which we should re-resolve.
-                        result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, retrySettings.DefaultMaxRetryCount);
+                        result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, 8);
                         return true;
                     }
 
@@ -62,7 +62,7 @@ namespace WordCount.WebService
                         // The address is correct, but the server processing failed.
                         // This could be due to conflicts when writing the word to the dictionary.
                         // Retry the operation without re-resolving the address.
-                        result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, true, retrySettings, retrySettings.DefaultMaxRetryCount);
+                        result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, true, retrySettings, 8);
                         return true;
                     }
                 }
@@ -72,7 +72,7 @@ namespace WordCount.WebService
                     we.Status == WebExceptionStatus.ConnectionClosed ||
                     we.Status == WebExceptionStatus.ConnectFailure)
                 {
-                    result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, retrySettings.DefaultMaxRetryCount);
+                    result = new ExceptionHandlingRetryResult(exceptionInformation.Exception, false, retrySettings, 8);
                     return true;
                 }
             }

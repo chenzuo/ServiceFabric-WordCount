@@ -15,32 +15,36 @@
         dl, dt, dd, ol, ul, li,
         fieldset, form, label, legend,
         table, caption, tbody, tfoot, thead, tr, th, td,
-        article, aside, canvas, details, embed, 
-        figure, figcaption, footer, header, hgroup, 
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
         menu, nav, output, ruby, section, summary,
         time, mark, audio, video {
-	        border: 0;
-	        font-size: 100%;
-	        font: inherit;
-	        vertical-align: baseline;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
         }
         /* HTML5 display-role reset for older browsers */
-        article, aside, details, figcaption, figure, 
+        article, aside, details, figcaption, figure,
         footer, header, hgroup, menu, nav, section {
-	        display: block;
+            display: block;
         }
+
         body {
-	        line-height: 1;
+            line-height: 1;
             font: 0.9em/1.2 Segoe UI,Arial,sans-serif;
-            background:#DDD;
+            background: #DDD;
         }
-        h1{
-            font-size:3em;
-            color:#00ABEC;
+
+        h1 {
+            font-size: 3em;
+            color: #00ABEC;
         }
-        h2{
-            font-size:2em;
+
+        h2 {
+            font-size: 2em;
         }
+
         td {
             padding: 2px 15px;
         }
@@ -49,43 +53,44 @@
 <body>
     <script type="text/javascript">
         var serviceUrl = location.protocol + '/' + location.hostname + (location.port ? ':' + location.port : '');
-        //var serviceUrl = serviceUrl + (location.pathname ? '/' + location.pathname : '');
+        serviceUrl = serviceUrl + (location.pathname ? '/' + location.pathname : '');
+        serviceUrl = serviceUrl.replace('/index.html', '');
+
         var iteration = 0;
 
         $(function () {
-            var CountTask = setInterval(function () { Count(); }, 350);
-            var AddWordTask = setInterval(function () { SendWords(); }, 200);
+            var CountTask = setInterval(function () { Count(); }, 1000);//350
+            var AddWordTask = setInterval(function () { SendWords(); }, 800);//200
         });
 
-        function SendWords()
-        {
+        function SendWords() {
             $.ajax({
-                url: serviceUrl + '/api/AddWord/' + randomWord(),
+                url: 'http://localhost:8081/wordcount/api/AddWord/' + randomWord(),
                 method: 'POST'
             })
-           .done(function (wordResult) {
-               $('#sendResult').html(wordResult);
-           });
+                .done(function (wordResult) {
+                    $('#sendResult').html(wordResult);
+                });
         }
 
-        function Count()
-        {
+        //计算count
+        function Count() {
+            //输出参数
             $.ajax({
-                url: serviceUrl + '/api/Count?c=' + Math.random(),
+                url: 'http://localhost:8081/wordcount/api/Count?c=' + Math.random(),
                 dataType: 'text',
                 method: 'GET'
             })
-           .done(function (countResult) {
-                $('#count').html(countResult)
-           });
-        }
+                .done(function (countResult) {
+                    $('#count').html(countResult)
+                });
+        };
 
-        function randomWord()
-        {
+        function randomWord() {
             var text = "";
             var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-            for( var i=0; i < 5; i++ )
+            for (var i = 0; i < 5; i++)
                 text += possible.charAt(Math.floor(Math.random() * possible.length));
 
             return text;
